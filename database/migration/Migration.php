@@ -54,7 +54,7 @@ namespace Migration {
         static function foreignId(string $column): void
         {
 
-            self::$table[] = $column . "_id int(11) not null, CONSTRAINT FK_" . self::$tableName . "_" . $column . " FOREIGN KEY (id) REFERENCES " . $column . "(id)";
+            self::$table[] = $column . "_id int(11) not null, CONSTRAINT FK_" . self::$tableName . "_" . $column . " FOREIGN KEY (".$column."_id) REFERENCES " . $column . "(id)";
         }
 
         static function run(\PDO $connection): void
@@ -63,6 +63,7 @@ namespace Migration {
             $connection->exec($query);
             self::$table = [];
             $connection = null;
+            var_dump($query);
             echo Self::$tableName." Table Migration Successful".PHP_EOL;
         }
     }

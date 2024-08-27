@@ -9,6 +9,6 @@ $connection = getConnection();
 
 MigrationImpl::setName("images");
 MigrationImpl::id();
-MigrationImpl::string("name");
+MigrationImpl::string("path");
 MigrationImpl::foreignId("products");
 MigrationImpl::run($connection);
