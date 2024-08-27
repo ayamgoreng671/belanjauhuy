@@ -15,34 +15,32 @@ namespace Repository{
         // function delete(Test $test): void;
     }
 
-    class ProductRepositoryImpl implements ProductRepository{
+    class CategoryRepositoryImpl implements CategoryRepository{
         public function __construct(private \PDO $connection){
 
         }
 
-        function insert(Product $product): Product{
-            $sql ="INSERT into products(`name`, `slug`, `stock`, `description`, `categories_id`) VALUES (?,?,?,?,?)";
+        function insert(Category $category): Category{
+            $sql ="INSERT into categories(`name`, `slug`, `image`) VALUES (?,?,?)";
             $result = $this->connection->prepare($sql);
-            $result->execute([$product->getName(),$product->getSlug(),$product->getStock(),$product->getDescription(),$product->getCategoryId()]);
+            $result->execute([$category->getName(),$category->getSlug(),$category->getImage()]);
 
             $id = $this->connection->lastInsertId();
-            $product->setId($id);
+            $category->setId($id);
 
-            return $product;
+            return $category;
         }
-        function findById(int $id): ?Product{
-            $sql = "SELECT * FROM products WHERE id = ?";
+        function findById(int $id): ?Category{
+            $sql = "SELECT * FROM categories WHERE id = ?";
             $result = $this->connection->prepare($sql);
             $result->execute([$id]);
 
             if($row = $result->fetch()){
-                return new Product(
+                return new Category(
                     id: $row["id"],
                     name: $row["name"],
                     slug: $row["slug"],
-                    stock: $row["stock"],
-                    description: $row["description"],
-                    categoryId: $row["categories_id"],
+                    image: $row["image"]
                 );
             }else{
                 return null;
@@ -57,13 +55,11 @@ namespace Repository{
             $array = [];
 
             while($row = $result->fetch()){
-                $array[] = new Product(
+                $array[] = new Category(
                     id: $row["id"],
                     name: $row["name"],
                     slug: $row["slug"],
-                    stock: $row["stock"],
-                    description: $row["description"],
-                    categoryId: $row["categories_id"],
+                    image: $row["image"]
                 );
             }
 
